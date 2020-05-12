@@ -1,6 +1,6 @@
 name: ubuntu-forum-client
 version: '0.1'
-summary: Ubuntu Forum webapp
+summary: Ubuntu Community Hub webapp
 description: |
   Simple webapp showing discourse.ubuntu.com
 base: core18

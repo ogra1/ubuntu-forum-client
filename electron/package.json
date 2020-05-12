@@ -1,0 +1,29 @@
+{
+  "name": "ubuntu-forum-client",
+  "version": "0.1.0",
+  "description": "Ubuntu Forum Client",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/ogra1/ubuntu-forum-client",
+  "keywords": [
+    "Ubuntu",
+    "forum",
+    "client",
+    "community",
+    "dscussion"
+  ],
+  "author": "GitHub",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron": "^7.2.4",
+    "electron-window-state": "latest",
+    "electron-context-menu": "latest"
+  },
+  "dependencies": {
+    "electron": "^7.2.4",
+    "electron-window-state": "latest",
+    "electron-context-menu": "latest"
+  }
+}

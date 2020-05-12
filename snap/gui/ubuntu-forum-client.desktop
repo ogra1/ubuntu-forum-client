@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Ubuntu Forum
+Icon=${SNAP}/meta/gui/icon.png
+Exec=ubuntu-forum-client.forum
+Terminal=false
+StartupWMClass=ubuntu-forum-client
+Categories=Utility;

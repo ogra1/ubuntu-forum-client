@@ -29,7 +29,7 @@ apps:
 plugs:
   browser-sandbox:
     interface: browser-support
-    allow-sandbox: true
+    allow-sandbox: false
 
 parts:
   forum:

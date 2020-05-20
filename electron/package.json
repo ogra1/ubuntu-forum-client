@@ -16,11 +16,6 @@
   ],
   "author": "GitHub",
   "license": "CC0-1.0",
-  "devDependencies": {
-    "electron": "^7.2.4",
-    "electron-window-state": "latest",
-    "electron-context-menu": "latest"
-  },
   "dependencies": {
     "electron": "^7.2.4",
     "electron-window-state": "latest",

@@ -5,6 +5,7 @@ const contextMenu = require('electron-context-menu');
 const appMenu = require('./menu.js');
 const electron = require('electron');
 const windowStateKeeper = require('electron-window-state');
+ipc = electron.ipcMain;
 
 let mainWindow
 let tray = null
@@ -21,6 +22,9 @@ require('electron-context-menu')({
   showInspectElement: false
 });
 
+app.allowRendererProcessReuse = true
+app.commandLine.appendSwitch ("disk-cache-size=10485760")
+
 function createWindow () {
   let mainWindowState = windowStateKeeper({
     defaultWidth: 1024,
@@ -33,6 +37,9 @@ function createWindow () {
     'width': mainWindowState.width,
     'height': mainWindowState.height,
     'icon': path.join(process.env["SNAP"], 'meta/gui/icon.png'),
+    webPreferences: {
+      'preload': path.join(process.env["SNAP"], 'electron', 'resources', 'app', 'preload.js')
+    }
   })
 
   mainWindow.loadURL(main_url)
@@ -149,3 +156,11 @@ app.on('window-all-closed', function () {
 app.on('activate', function () {
   if (mainWindow === null) createWindow()
 })
+
+ipc.on('unread', (event, args) => {
+  if (args !== 0) {
+    app.badgeCount = args
+  }  else {
+    app.badgeCount = 0
+  }
+});

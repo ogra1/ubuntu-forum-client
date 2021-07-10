@@ -1,5 +1,5 @@
 name: ubuntu-forum-client
-version: '0.1'
+version: '0.2'
 summary: Ubuntu Community Hub webapp
 description: |
   Simple webapp showing discourse.ubuntu.com
@@ -8,12 +8,18 @@ confinement: strict
 grade: devel
 compression: lzo
 
+architectures:
+  - build-on: amd64
+  - build-on: armhf
+  - build-on: arm64
+
 apps:
   forum:
     extensions: [gnome-3-34]
-    command: desktop-launch $SNAP/electron/ubuntu-forum-client --disable-gpu --no-sandbox
+    command: snap/command-chain/desktop-launch $SNAP/electron/ubuntu-forum-client --disable-gpu --no-sandbox
     environment:
       TMPDIR: $XDG_RUNTIME_DIR
+      DISABLE_WAYLAND: 1
     plugs:
     - audio-playback
     - audio-record
@@ -29,22 +35,11 @@ apps:
 
 parts:
   forum:
-    plugin: nodejs
+    plugin: nil
     source: ./electron
-    nodejs-version: 10.21.0
-    nodejs-package-manager: npm
     build-environment:
-      - PATH: "$PATH:$SNAPCRAFT_PART_SRC/../npm/bin"
       - PATH: "$PATH:$SNAPCRAFT_PART_BUILD/node_modules/.bin"
-      - NPM_CONFIG_UNSAFE_PERM: "true"
     override-build: |
-      case $SNAPCRAFT_ARCH_TRIPLET in
-        "i386-linux-gnu") ARCH="ia32";;
-        "x86_64-linux-gnu") ARCH="x64";;
-        "arm-linux-gnueabihf") ARCH="armv7l";;
-        "aarch64-linux-gnu") ARCH="arm64";;
-        *) echo "ERROR: electron does not support the '$SNAPCRAFT_ARCH_TRIPLET' architecture" && exit 1;;
-      esac
       # workaround for build.snapcraft.io builds
       # https://bugs.launchpad.net/bugs/1886861
       if [ -n "$http_proxy" ]; then
@@ -59,14 +54,16 @@ parts:
       mv $SNAPCRAFT_PART_INSTALL/$SNAPCRAFT_PROJECT_NAME-linux-* \
           $SNAPCRAFT_PART_INSTALL/electron
       cp icons/*.png $SNAPCRAFT_PART_INSTALL/
+    build-snaps:
+      - node/14/stable
     stage-packages:
-    - libasound2
-    - libgconf-2-4
-    - libnss3
-    - libunity9 # for badgeCount in dock
-    - libx11-xcb1
-    - libxss1
-    - libxtst6
+      - libasound2
+      - libgconf-2-4
+      - libnss3
+      - libunity9 # for badgeCount in dock
+      - libx11-xcb1
+      - libxss1
+      - libxtst6
   cleanup:
     after: [ forum ]
     plugin: nil

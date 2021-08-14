@@ -3,7 +3,7 @@ version: '0.2'
 summary: Ubuntu Community Hub webapp
 description: |
   Simple webapp showing discourse.ubuntu.com
-base: core18
+base: core20
 confinement: strict
 grade: devel
 compression: lzo
@@ -15,8 +15,8 @@ architectures:
 
 apps:
   forum:
-    extensions: [gnome-3-34]
-    command: snap/command-chain/desktop-launch $SNAP/electron/ubuntu-forum-client --disable-gpu --no-sandbox
+    extensions: [gnome-3-38]
+    command: electron/ubuntu-forum-client --disable-gpu --no-sandbox
     environment:
       TMPDIR: $XDG_RUNTIME_DIR
       DISABLE_WAYLAND: 1
@@ -40,6 +40,7 @@ parts:
     build-environment:
       - PATH: "$PATH:$SNAPCRAFT_PART_BUILD/node_modules/.bin"
     override-build: |
+      set +u # core20 base does not allow unbound variables !
       # workaround for build.snapcraft.io builds
       # https://bugs.launchpad.net/bugs/1886861
       if [ -n "$http_proxy" ]; then
@@ -67,10 +68,10 @@ parts:
   cleanup:
     after: [ forum ]
     plugin: nil
-    build-snaps: [ gnome-3-28-1804 ]
+    build-snaps: [ gnome-3-38-2004 ]
     override-prime: |
       set -eux
-      cd /snap/gnome-3-28-1804/current
+      cd /snap/gnome-3-38-2004/current
       find . -type f,l -exec rm -f $SNAPCRAFT_PRIME/{} \;
       for CRUFT in bug lintian man; do
         rm -rf $SNAPCRAFT_PRIME/usr/share/$CRUFT

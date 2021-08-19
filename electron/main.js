@@ -163,8 +163,8 @@ app.on('activate', function () {
 
 ipc.on('unread', (event, args) => {
   if (args !== 0) {
-    app.badgeCount = args
+    app.setBadgeCount(args)
   }  else {
-    app.badgeCount = 0
+    app.setBadgeCount(0)
   }
 });
